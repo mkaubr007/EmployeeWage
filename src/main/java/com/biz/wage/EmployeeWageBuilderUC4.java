@@ -8,13 +8,13 @@ public class EmployeeWageBuilderUC4 {
         int empHrs=0;
         int empWage=0;
         int empCheck=(int)Math.floor(Math.random()*10)%2;
-       switch (empCheck){
-           case IS_PART_TIME:
-               empHrs=8;
-               break;
-           case IS_FULL_TIME:
-               empHrs=8;
-       }
+        switch (empCheck){
+            case IS_PART_TIME:
+                empHrs=8;
+                break;
+            case IS_FULL_TIME:
+                empHrs=8;
+        }
         empWage=empHrs * EMP_RATE_PER_HOUR;
         System.out.println("Emp Wage :"+empWage);
     }

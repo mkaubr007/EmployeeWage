@@ -1,4 +1,4 @@
-package com.biz.wage;
+    package com.biz.wage;
 
 public class EmployeeWageBuilder {
     public static void main(String[] args) {

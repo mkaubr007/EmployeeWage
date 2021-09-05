@@ -18,6 +18,7 @@ public class EmployeeWage implements IComputeEmpWage {
         int empHrs = 0;
         int totalWage = 0;
         int totalHrs = 0;
+        int dailEmpWage=0;
 
         int day = 1;
         while (day <= companyInfo.getNoOfWorkingDays() && totalHrs < companyInfo.getMaxHrsPerMonth()) {
@@ -35,10 +36,11 @@ public class EmployeeWage implements IComputeEmpWage {
             int empWage = empHrs * companyInfo.getEmpRatePerHr();
 
             totalHrs += empHrs;
+            dailEmpWage+=empWage;
             totalWage += empWage;
             day++;
         }
-        return totalWage;
+        return totalWage+dailEmpWage;
     }
 
     public static void main(String[] args) {

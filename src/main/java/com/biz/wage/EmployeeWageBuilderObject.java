@@ -15,6 +15,7 @@ public class EmployeeWageBuilderObject {
         this.empRatePerHour = empRatePerHour;
         this.numOfWorkingDays = numOfWorkingDays;
         this.maxHoursPerMonth = maxHoursPerMonth;
+        this.totalEmpWage = totalEmpWage;
     }
 
 
@@ -46,6 +47,6 @@ public class EmployeeWageBuilderObject {
        dMart.computeEmpWage();
        System.out.println(dMart);
        reliance.computeEmpWage();
-        System.out.println(reliance);
+       System.out.println(reliance);
     }
 }

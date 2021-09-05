@@ -1,65 +1,23 @@
 package com.biz.wage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EmployeeWage implements IComputeEmpWage {
 
     public static final int IS_FULL_TIME = 1;
     public static final int IS_PART_TIME = 2;
-
-    List<CompanyInfo> listCompany = new ArrayList<CompanyInfo>();
-    public static Map<String,CompanyInfo> companyInfoMap = new HashMap<String,CompanyInfo>();
-
     private int numOfCompany = 0;
+    private List<CompanyEmpWage> companyEmpWageList;
+    private Map<String,CompanyEmpWage>companyToEmpWageMap;
+    public  Map<String,CompanyInfo> companyInfoMap = new HashMap<String,CompanyInfo>();
 
-    public static int computeEmpWage(CompanyInfo companyInfo) {
-        int empHrs = 0;
-        int totalWage = 0;
-        int totalHrs = 0;
-        int dailEmpWage=0;
-
-        int day = 1;
-        while (day <= companyInfo.getNoOfWorkingDays() && totalHrs < companyInfo.getMaxHrsPerMonth()) {
-            double empCheck = Math.floor(Math.random() * 10) % 3;
-            switch ((int) empCheck) {
-                case IS_FULL_TIME:
-                    empHrs = 8;
-                    break;
-                case IS_PART_TIME:
-                    empHrs = 4;
-                    break;
-                default:
-                    empHrs = 0;
-            }
-            int empWage = empHrs * companyInfo.getEmpRatePerHr();
-
-            totalHrs += empHrs;
-            dailEmpWage+=empWage;
-            totalWage += empWage;
-            day++;
-        }
-        return totalWage+dailEmpWage;
+    public EmployeeWage(){
+        companyEmpWageList=new LinkedList<>();
+        companyToEmpWageMap=new HashMap<>();
     }
-
-    public static void main(String[] args) {
-        IComputeEmpWage employeeWageBuilder = new EmployeeWage();
-        ((EmployeeWage) employeeWageBuilder).addCompanyEmpWage("DMart", 20, 6, 10);
-        ((EmployeeWage) employeeWageBuilder).addCompanyEmpWage("JIO", 27, 16, 10);
-        ((EmployeeWage) employeeWageBuilder).addCompanyEmpWage("Airtel", 27, 16, 10);
-        employeeWageBuilder.computeEmpWage();
-        System.out.println("Map:"+companyInfoMap);
-        System.out.println(companyInfoMap.get("DMart"));
-
-    }
-
-    public void addCompanyEmpWage(String companyName, int empRatePerHr, int noOfWorkingDays, int maxHrsPerMonth) {
-        CompanyInfo companyInfo = new CompanyInfo(companyName, empRatePerHr, noOfWorkingDays, maxHrsPerMonth);
-        listCompany.add(companyInfo);
-
-
-
+    public void addCompanyEmpWage(String company,int empRatePerHour,int numOfWorkingDays,int maxHoursPerMonth){
+        CompanyEmpWage companyEmpWage=new CompanyEmpWage(company,empRatePerHour,numOfWorkingDays,maxHoursPerMonth);
+        companyEmpWage.add(companyEmpWage);
+        companyToEmpWageMap.put(company,companyEmpWage);
     }
 
     @Override
@@ -68,17 +26,24 @@ public class EmployeeWage implements IComputeEmpWage {
     }
 
     public void computeEmpWage() {
-        for (int i = 0; i < listCompany.size(); i++) {
-            int totalWage = EmployeeWage.computeEmpWage(listCompany.get(i));
-            listCompany.get(i).setTotalWage(totalWage);
-            companyInfoMap.put(listCompany.get(i).getCompanyName(),listCompany.get(i));
+        for (int i=0;i<companyEmpWageList.size();i++){
+            CompanyEmpWage companyEmpWage=companyEmpWageList.get(i);
+            companyEmpWage.setTotalEmpWage(this.computeEmpWage(companyEmpWage));
+            System.out.println(companyEmpWage);
         }
-
     }
-
     @Override
-    public int getTotalWage(String company) {
-        return 0;
+    public int getTotalWage(String company){
+        return companyToEmpWageMap.get(company).totalEmpWage;
+    }
+    public int computeEmpWage(CompanyEmpWage companyEmpWage){...}
+    public static void main(String[] args) {
+        IComputeEmpWage employeeWageBuilder = new EmployeeWage();
+        employeeWageBuilder.addCompany("DMart",20,20,100);
+        employeeWageBuilder.addCompany("Reliance",20,20,100);
+        employeeWageBuilder.computeEmpWage();
+        System.out.println("Total Merge for DMart: "+employeeWageBuilder.getTotalWage("DMart"));
+
     }
 
 }
